@@ -21,8 +21,9 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Optional;
 
-import static io.restassured.RestAssured.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
@@ -112,7 +113,7 @@ public class NewsControllerTest {
 
         Optional<NewsEntity> news =  newsRepository.findByNumber(testNumber);
         assertTrue(news.isEmpty());
-        assertEquals(news.isEmpty(), result);
+        assertTrue(result);
     }
 
     @Test
@@ -249,6 +250,9 @@ public class NewsControllerTest {
                 .statusCode(HttpStatus.OK.value());
 
         NewsEntity result = newsRepository.findByNumber(updateNumber).get();
-        assertEquals(newNewsDto.);
+        assertEquals(newNewsDto.getNumber(), result.getNumber());
+        assertEquals(newNewsDto.getText(), result.getText());
+        assertEquals(newNewsDto.getAuthor(), result.getAuthor());
+        assertEquals(newNewsDto.getTitle(), result.getTitle());
     }
 }
